@@ -11,6 +11,8 @@ const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 5002;
 
+app.use('/docs', express.static(path.join(__dirname, '..', 'docs')));
+
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
 app.post('/match', (req, res) => {
@@ -19,4 +21,7 @@ app.post('/match', (req, res) => {
   res.json({ count: results.length, results });
 });
 
-app.listen(PORT, () => console.log('Fuzzy Wazzy listening on :' + PORT));
+app.listen(PORT, () => {
+  console.log('Fuzzy Wazzy listening on :' + PORT);
+  console.log(`Docs at http://localhost:${PORT}/docs/demo.html`);
+});
