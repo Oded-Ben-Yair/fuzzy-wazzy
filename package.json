@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "express": "^4.19.2",
-    "fuse.js": "^7.0.0"
+    "fuse.js": "^7.0.0",
+    "mongodb": "^6.19.0",
+    "pg": "^8.16.3"
   }
 }
