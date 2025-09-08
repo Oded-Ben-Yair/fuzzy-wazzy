@@ -11,20 +11,47 @@ A fuzzy matching API service for matching nurses based on weighted criteria. Use
 - Expertise tag matching
 - Database support (PostgreSQL/MongoDB) with JSON fallback
 
-## Quick Start
+## Quickstart
 
 ```bash
 # Install dependencies
 npm install
 
-# Start with JSON data (default)
+# Start the server (port 5002 by default)
 npm start
 
-# Start with database
-USE_DB=true DB_KIND=postgres DATABASE_URL=postgres://... npm start
+# Or use the dev script for automatic port cleanup
+npm run dev
+
+# Run smoke tests
+npm run test:smoke
+
+# View interactive demo
+open http://localhost:5002/docs/demo.html
 ```
 
-The server runs on port 5002 by default (configurable via PORT env).
+### Example API Calls
+
+```bash
+# Health check
+curl http://localhost:5002/health
+
+# Match nurses in Tel Aviv for wound care
+curl -X POST http://localhost:5002/match \
+  -H "Content-Type: application/json" \
+  -d '{
+    "city": "Tel Aviv",
+    "servicesQuery": ["Wound Care"],
+    "expertiseQuery": ["Geriatrics"],
+    "start": "2025-07-28T09:00:00Z",
+    "end": "2025-07-28T12:00:00Z",
+    "lat": 32.0853,
+    "lng": 34.7818,
+    "maxDistanceKm": 30,
+    "urgent": true,
+    "topK": 5
+  }'
+```
 
 ## API Endpoints
 
@@ -82,14 +109,22 @@ USE_DB=true DB_KIND=postgres DATABASE_URL=postgres://... npm start
 curl http://localhost:5002/db/health
 ```
 
-## Matching Algorithm
+## How Scoring Works
 
-The matching engine uses a weighted scoring system:
-- Services matching: 30% (fuzzy string matching)
-- Expertise matching: 30% (Jaccard similarity)
-- Location proximity: 20% (distance-based)
-- Availability overlap: 20% (time window matching)
-- Urgent requests receive a 10% score boost
+The matching engine uses a weighted scoring system to rank nurses based on multiple factors. Each factor contributes to the final score: services matching (30% weight, using fuzzy string matching), expertise matching (30% weight, using Jaccard similarity for tags), location proximity (20% weight, distance-based scoring), and availability overlap (20% weight, time window matching). Urgent requests receive an additional 10% score boost. For detailed scoring breakdown and verification, see [docs/VERIFICATION.md](docs/VERIFICATION.md).
+
+## Testing
+
+Run the smoke tests to verify the system is working correctly:
+
+```bash
+npm run test:smoke
+```
+
+This runs three test scenarios that validate different aspects of the matching algorithm:
+- Case A: Strong service match with mixed expertise
+- Case B: Fuzzy service term to prove fuzzy matching works
+- Case C: Same as A but with smaller distance radius to show location weight impact
 
 ## Development
 
