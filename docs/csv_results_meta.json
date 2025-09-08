@@ -1,0 +1,12 @@
+[
+{"scenario":"A","city":"Tel Aviv-Yafo","count":5,"top1_id":"b9fabc8e-08e2-4f15-a05c-26e96b4c5eb4","top1_score":0.5999999999974293,"latency":191,"valid_schema":"yes"},
+{"scenario":"B","city":"Haifa","count":0,"top1_id":"none","top1_score":0,"latency":161,"valid_schema":"yes"},
+{"scenario":"C","city":"Ramat-Gan","count":5,"top1_id":"27ad8aa6-6079-44fa-91b5-92a2a08939cf","top1_score":0.1,"latency":159,"valid_schema":"yes"},
+{"scenario":"D","city":"Bat-Yam","count":4,"top1_id":"4983d84e-9875-4322-9ea4-ac9723727925","top1_score":0.6,"latency":124,"valid_schema":"yes"},
+{"scenario":"E","city":"Kiryat Tivon","count":1,"top1_id":"274d17f4-7520-4e7d-9f63-f5bc795ab667","top1_score":0.30000000000000004,"latency":107,"valid_schema":"yes"},
+{"scenario":"F","city":"Tel Aviv-Yafo","count":3,"top1_id":"292d6495-7935-4a0d-83d4-8133c9f1239d","top1_score":0.6,"latency":106,"valid_schema":"yes"},
+{"scenario":"G","city":"Jerusalem","count":10,"top1_id":"3a37acbb-6389-45d7-9e88-316f83ba7f28","top1_score":0.5999999999974293,"latency":120,"valid_schema":"yes"},
+{"scenario":"H","city":"Tel Aviv-Yafo","count":5,"top1_id":"0471f24c-644d-4947-8899-45d66879b6d9","top1_score":0.5666666666666667,"latency":109,"valid_schema":"yes"},
+{"scenario":"I","city":"Haifa","count":0,"top1_id":"none","top1_score":0,"latency":113,"valid_schema":"yes"},
+{"scenario":"J","city":"Tel Aviv-Yafo","count":10,"top1_id":"10786aac-6547-4710-9c91-4b41a5512178","top1_score":0.30000000000000004,"latency":112,"valid_schema":"yes"}
+]

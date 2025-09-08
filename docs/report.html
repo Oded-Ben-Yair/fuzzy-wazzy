@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV Test Report - Fuzzy Wazzy</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    .header {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .meta-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .meta-item {
+      background: #f9f9f9;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .meta-label {
+      font-weight: bold;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .summary-table th {
+      background: #3498db;
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    .summary-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #ddd;
+    }
+    .summary-table tr:hover {
+      background: #f5f5f5;
+    }
+    .scenario-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .results-table {
+      width: 100%;
+      margin-top: 10px;
+      font-size: 0.9em;
+    }
+    .results-table th {
+      background: #ecf0f1;
+      padding: 8px;
+      text-align: left;
+    }
+    .results-table td {
+      padding: 6px 8px;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    .checklist {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .check-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #ecf0f1;
+    }
+    .check-pass {
+      color: #27ae60;
+      font-weight: bold;
+    }
+    .check-fail {
+      color: #e74c3c;
+      font-weight: bold;
+    }
+    .check-warn {
+      color: #f39c12;
+      font-weight: bold;
+    }
+    .score {
+      background: #3498db;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>CSV Test Report - Fuzzy Wazzy</h1>
+    <div class="meta-info">
+      <div class="meta-item">
+        <div class="meta-label">Engine Mode</div>
+        <div>Fuzzy Local Mode</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Git SHA</div>
+        <div>ef5b534</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Generated</div>
+        <div>2025-09-08T10:18:11.593Z</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Dataset Size</div>
+        <div>7915 rows</div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Summary Results</h2>
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>Scenario</th>
+        <th>City</th>
+        <th>Query</th>
+        <th>Count</th>
+        <th>Top Match</th>
+        <th>Score</th>
+        <th>Latency (ms)</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr>
+        <td><strong>A</strong></td>
+        <td>Tel Aviv-Yafo</td>
+        <td>wound care</td>
+        <td>5</td>
+        <td>b9fabc8e...</td>
+        <td><span class="score">0.600</span></td>
+        <td>191</td>
+      </tr>
+      <tr>
+        <td><strong>B</strong></td>
+        <td>Haifa</td>
+        <td>medication (urgent)</td>
+        <td>0</td>
+        <td>-</td>
+        <td>-</td>
+        <td>161</td>
+      </tr>
+      <tr>
+        <td><strong>C</strong></td>
+        <td>Ramat-Gan</td>
+        <td>pediatrics (time window)</td>
+        <td>5</td>
+        <td>27ad8aa6...</td>
+        <td><span class="score">0.100</span></td>
+        <td>159</td>
+      </tr>
+      <tr>
+        <td><strong>D</strong></td>
+        <td>Bat-Yam</td>
+        <td>general services</td>
+        <td>4</td>
+        <td>4983d84e...</td>
+        <td><span class="score">0.600</span></td>
+        <td>124</td>
+      </tr>
+      <tr>
+        <td><strong>E</strong></td>
+        <td>Kiryat Tivon</td>
+        <td>day night + circumcision</td>
+        <td>1</td>
+        <td>274d17f4...</td>
+        <td><span class="score">0.300</span></td>
+        <td>107</td>
+      </tr>
+      <tr>
+        <td><strong>F</strong></td>
+        <td>Tel Aviv-Yafo</td>
+        <td>hospital</td>
+        <td>3</td>
+        <td>292d6495...</td>
+        <td><span class="score">0.600</span></td>
+        <td>106</td>
+      </tr>
+      <tr>
+        <td><strong>G</strong></td>
+        <td>Jerusalem</td>
+        <td>home care</td>
+        <td>10</td>
+        <td>3a37acbb...</td>
+        <td><span class="score">0.600</span></td>
+        <td>120</td>
+      </tr>
+      <tr>
+        <td><strong>H</strong></td>
+        <td>Tel Aviv-Yafo</td>
+        <td>medicaton (typo test)</td>
+        <td>5</td>
+        <td>0471f24c...</td>
+        <td><span class="score">0.567</span></td>
+        <td>109</td>
+      </tr>
+      <tr>
+        <td><strong>I</strong></td>
+        <td>Haifa</td>
+        <td>wound + hospital</td>
+        <td>0</td>
+        <td>-</td>
+        <td>-</td>
+        <td>113</td>
+      </tr>
+      <tr>
+        <td><strong>J</strong></td>
+        <td>Tel Aviv-Yafo</td>
+        <td>empty query</td>
+        <td>10</td>
+        <td>10786aac...</td>
+        <td><span class="score">0.300</span></td>
+        <td>112</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Detailed Results</h2>
+  
+  <div class="scenario-section">
+    <h3>Scenario A: Tel Aviv Wound Care Search</h3>
+    <p><strong>City:</strong> Tel Aviv-Yafo | <strong>Results:</strong> 5 | <strong>Latency:</strong> 191ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>b9fabc8e...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>2839ac79...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>848c9dd7...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>9a518e24...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>4081978b...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario B: Haifa Medication with Urgency</h3>
+    <p><strong>City:</strong> Haifa | <strong>Results:</strong> 0 | <strong>Latency:</strong> 161ms</p>
+    <p>No results found for this scenario.</p>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario C: Ramat-Gan Pediatrics with Time Window</h3>
+    <p><strong>City:</strong> Ramat-Gan | <strong>Results:</strong> 5 | <strong>Latency:</strong> 159ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>27ad8aa6...</td>
+          <td><span class="score">0.100</span></td>
+          <td>Ramat-Gan</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>83861ed7...</td>
+          <td><span class="score">0.100</span></td>
+          <td>Ramat-Gan</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>912dd8c2...</td>
+          <td><span class="score">0.100</span></td>
+          <td>Ramat-Gan</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>c601d98d...</td>
+          <td><span class="score">0.100</span></td>
+          <td>Ramat-Gan</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>5cef1252...</td>
+          <td><span class="score">0.100</span></td>
+          <td>Ramat-Gan</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario D: Bat-Yam General Services</h3>
+    <p><strong>City:</strong> Bat-Yam | <strong>Results:</strong> 4 | <strong>Latency:</strong> 124ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>4983d84e...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Bat-Yam</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>bcb120b9...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Bat-Yam</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>3e26e865...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Bat-Yam</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>10892520...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Bat-Yam</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario E: Kiryat Tivon Day/Night Services</h3>
+    <p><strong>City:</strong> Kiryat Tivon | <strong>Results:</strong> 1 | <strong>Latency:</strong> 107ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>274d17f4...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Kiryat Tivon</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario F: Tel Aviv Hospital Services</h3>
+    <p><strong>City:</strong> Tel Aviv-Yafo | <strong>Results:</strong> 3 | <strong>Latency:</strong> 106ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>292d6495...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>eae6b5f6...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>0c03283b...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario G: Jerusalem Home Care</h3>
+    <p><strong>City:</strong> Jerusalem | <strong>Results:</strong> 10 | <strong>Latency:</strong> 120ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>3a37acbb...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Jerusalem</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>0d278ef5...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Jerusalem</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>dca9073d...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Jerusalem</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>67e4c1cf...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Jerusalem</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>5ad17c01...</td>
+          <td><span class="score">0.600</span></td>
+          <td>Jerusalem</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario H: Typo Tolerance Test</h3>
+    <p><strong>City:</strong> Tel Aviv-Yafo | <strong>Results:</strong> 5 | <strong>Latency:</strong> 109ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>0471f24c...</td>
+          <td><span class="score">0.567</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>b274e50b...</td>
+          <td><span class="score">0.567</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>ea0b0f26...</td>
+          <td><span class="score">0.567</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>732c1b13...</td>
+          <td><span class="score">0.567</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>0d9e03d7...</td>
+          <td><span class="score">0.567</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario I: Multi-Token Search</h3>
+    <p><strong>City:</strong> Haifa | <strong>Results:</strong> 0 | <strong>Latency:</strong> 113ms</p>
+    <p>No results found for this scenario.</p>
+  </div>
+  <div class="scenario-section">
+    <h3>Scenario J: Empty Query Test</h3>
+    <p><strong>City:</strong> Tel Aviv-Yafo | <strong>Results:</strong> 10 | <strong>Latency:</strong> 112ms</p>
+    
+    <table class="results-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nurse ID</th>
+          <th>Score</th>
+          <th>City</th>
+          <th>Services</th>
+        </tr>
+      </thead>
+      <tbody>
+        
+        <tr>
+          <td>1</td>
+          <td>10786aac...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>7d43ebab...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>2839ac79...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>856dbca8...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>15b3197b...</td>
+          <td><span class="score">0.300</span></td>
+          <td>Tel Aviv-Yafo</td>
+          <td>N/A</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="checklist">
+    <h2>Quality Checklist</h2>
+    <div class="check-item">
+      <span class="check-pass">
+        ✓
+      </span>
+      Schema Validation: All responses valid
+    </div>
+    <div class="check-item">
+      <span class="check-warn">
+        ⚠
+      </span>
+      Zero-Result Scenarios: 2/10
+    </div>
+    <div class="check-item">
+      <span class="check-warn">
+        ⚠
+      </span>
+      Average Latency: 130ms
+    </div>
+    <div class="check-item">
+      <span class="check-pass">✓</span>
+      CSV Data Loaded: 7915 rows processed
+    </div>
+    <div class="check-item">
+      <span class="check-pass">✓</span>
+      Centroid Lookup: Enabled for all cities
+    </div>
+  </div>
+
+  <script>
+    console.log('Test report generated at 2025-09-08T10:18:11.593Z');
+    console.log('Total scenarios: 10');
+    console.log('Zero results: 2');
+    console.log('Average latency: 130ms');
+  </script>
+</body>
+</html>

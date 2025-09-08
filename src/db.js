@@ -2,12 +2,24 @@ import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { parse } from 'csv-parse/sync';
+import { extractServices, extractExpertise } from './lib/normalize.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const USE_DB = (process.env.USE_DB || 'false').toLowerCase() === 'true';
 const DB_KIND = (process.env.DB_KIND || 'postgres').toLowerCase();
+
+// Load city centroids
+let CITY_CENTROIDS = {};
+let centroidDefaultUsed = false;
+try {
+  const centroidsPath = path.join(__dirname, '..', 'sample_data', 'city_centroids_il.json');
+  CITY_CENTROIDS = JSON.parse(fs.readFileSync(centroidsPath, 'utf-8'));
+} catch (e) {
+  console.warn('City centroids not loaded:', e.message);
+}
 
 // Lazy holders
 let pgClient = null;
@@ -47,10 +59,95 @@ export async function dbHealth() {
   }
 }
 
+// Helper to get coordinates for a city
+function getCityCoords(city) {
+  if (!city) return null;
+  
+  // Try exact match first
+  if (CITY_CENTROIDS[city]) {
+    return CITY_CENTROIDS[city];
+  }
+  
+  // Try case-insensitive match
+  const cityLower = city.toLowerCase();
+  for (const [key, coords] of Object.entries(CITY_CENTROIDS)) {
+    if (key.toLowerCase() === cityLower) {
+      return coords;
+    }
+  }
+  
+  // Default fallback
+  if (!centroidDefaultUsed) {
+    console.log('centroid_default_used');
+    centroidDefaultUsed = true;
+  }
+  return { lat: 31.4118, lng: 35.0818 };
+}
+
 // Unified fetch: return array of nurses with same shape as sample_data/nurses.json
 export async function loadNurses() {
   if (!USE_DB) {
-    const json = fs.readFileSync(path.join(__dirname, '..', 'sample_data', 'nurses.json'), 'utf-8');
+    // Try CSV first, fallback to JSON
+    const csvPath = path.join(__dirname, '..', 'sample_data', 'nurses.csv');
+    const jsonPath = path.join(__dirname, '..', 'sample_data', 'nurses.json');
+    
+    if (fs.existsSync(csvPath)) {
+      console.log('Loading nurses from CSV...');
+      let csvContent = fs.readFileSync(csvPath, 'utf-8');
+      // Remove BOM if present
+      if (csvContent.charCodeAt(0) === 0xFEFF) {
+        csvContent = csvContent.slice(1);
+      }
+      const records = parse(csvContent, {
+        columns: true,
+        skip_empty_lines: true,
+        bom: true
+      });
+      
+      // Group by nurse_id to consolidate records
+      const nurseMap = new Map();
+      
+      for (const record of records) {
+        const nurseId = record.nurse_id;
+        if (!nurseId) continue;
+        
+        if (!nurseMap.has(nurseId)) {
+          const coords = getCityCoords(record.municipality);
+          nurseMap.set(nurseId, {
+            id: nurseId,
+            name: record.name || record.treatment_type || 'NURSE',
+            gender: record.gender || '',
+            city: record.municipality || '',
+            lat: coords?.lat || 31.4118,
+            lng: coords?.lng || 35.0818,
+            services: extractServices(record.treatment_type, record.name, record.remarks),
+            expertise: extractExpertise(record.mobility, record.status, record.remarks),
+            availability: {
+              from: record.from_datetime_utc || null,
+              to: record.to_datetime_utc || null
+            },
+            status: record.status || '',
+            rating: 4.5 + Math.random() * 0.5, // Random rating 4.5-5.0
+            reviewsCount: Math.floor(50 + Math.random() * 150) // Random 50-200
+          });
+        } else {
+          // Merge services and expertise from multiple records
+          const nurse = nurseMap.get(nurseId);
+          const newServices = extractServices(record.treatment_type, record.name, record.remarks);
+          const newExpertise = extractExpertise(record.mobility, record.status, record.remarks);
+          
+          nurse.services = [...new Set([...nurse.services, ...newServices])];
+          nurse.expertise = [...new Set([...nurse.expertise, ...newExpertise])];
+        }
+      }
+      
+      console.log(`Loaded ${nurseMap.size} unique nurses from CSV`);
+      return Array.from(nurseMap.values());
+    }
+    
+    // Fallback to JSON
+    console.log('Loading nurses from JSON...');
+    const json = fs.readFileSync(jsonPath, 'utf-8');
     return JSON.parse(json);
   }
   if (DB_KIND === 'postgres') {
