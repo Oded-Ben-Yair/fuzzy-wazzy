@@ -67,6 +67,12 @@ export function weightedMatch(query, nurses){
     return { id:n.id, name:n.name, city:n.city, score, reason, meta:{ serviceScore, expertiseScore, availabilityRatio:avail, distanceKm:dKm, rating:n.rating, reviewsCount:n.reviewsCount } };
   });
 
-  const sorted = scored.sort((a,b)=> (b.score??0)-(a.score??0) || (b.meta?.rating??0)-(a.meta?.rating??0) || (b.meta?.reviewsCount??0)-(a.meta?.reviewsCount??0));
+  // Stable sort: by score, then by id for deterministic results
+  const sorted = scored.sort((a, b) => {
+    const scoreDiff = (b.score ?? 0) - (a.score ?? 0);
+    if (scoreDiff !== 0) return scoreDiff;
+    // Tie-break by id for consistent ordering
+    return a.id < b.id ? -1 : 1;
+  });
   return sorted.slice(0, topK);
 }

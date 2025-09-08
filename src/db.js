@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { parse } from 'csv-parse/sync';
-import { extractServices, extractExpertise } from './lib/normalize.js';
+import { extractServices, extractExpertise, hashToUnit } from './lib/normalize.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -127,8 +127,8 @@ export async function loadNurses() {
               to: record.to_datetime_utc || null
             },
             status: record.status || '',
-            rating: 4.5 + Math.random() * 0.5, // Random rating 4.5-5.0
-            reviewsCount: Math.floor(50 + Math.random() * 150) // Random 50-200
+            rating: 4.0 + hashToUnit(nurseId), // Deterministic rating 4.0-5.0
+            reviewsCount: Math.floor(50 + hashToUnit(nurseId + '_count') * 150) // Deterministic 50-200
           });
         } else {
           // Merge services and expertise from multiple records

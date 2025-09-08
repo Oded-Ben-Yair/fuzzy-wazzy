@@ -1,15 +1,25 @@
 // Service/expertise normalization utilities for CSV ingestion
 
+// Deterministic hash function for consistent random values
+export function hashToUnit(str) {
+  let h = 2166136261 >>> 0;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619) >>> 0;
+  }
+  return (h % 1000) / 1000;
+}
+
 const SERVICE_SYNONYMS = {
-  "wound care": ["wound", "wound_treatment", "wound_care", "WOUND_CARE"],
+  "wound care": ["wound", "wound_treatment", "wound_care", "WOUND_CARE", "WOUND_TREATMENT", "DIABETIC_WOUND_TREATMENT", "DIFFICULT_WOUND_HEALING_TREATMENT", "BURN_TREATMENT"],
   "medication": ["medication", "meds", "MEDICATION", "MEDICATION_ARRANGEMENT"],
-  "hospital": ["hospital", "_hospital", "PRIVATE_SECURITY_HOSPITAL"],
-  "home care": ["_home", "home", "PRIVATE_SECURITY_HOME"],
-  "pediatrics": ["pediatrics", "child", "kids", "PEDIATRICS"],
+  "hospital": ["hospital", "_hospital", "HOSPITAL", "PRIVATE_SECURITY_HOSPITAL", "FOLLOW_UP_AFTER_SURGERY", "CENTRAL_CATHETER_TREATMENT", "CATHETER_INSERTION_REPLACEMENT"],
+  "home care": ["home", "_home", "PRIVATE_SECURITY_HOME", "GASTROSTOMY_CARE_FEEDING", "ESCORTED_BY_NURSE", "FERTILITY_TREATMENTS"],
+  "pediatrics": ["pediatrics", "child", "kids", "PEDIATRICS", "BREASTFEEDING_CONSULTATION", "HOME_NEWBORN_VISIT"],
   "day night": ["day_night", "DAY_NIGHT", "DAY_NIGHT_CIRCUMCISION_NURSE"],
   "circumcision": ["circumcision", "CIRCUMCISION_NURSE"],
-  "general": ["default", "general", "nurse", "DEFAULT"],
-  "catheter": ["catheter", "CENTRAL_CATHETER_TREATMENT"],
+  "general": ["default", "general", "nurse", "DEFAULT", "BLOOD_TESTS", "ENEMA_UNDER_INSTRUCTION", "HEALTHY_LIFESTYLE_GUIDANCE", "HANDLING_AND_TRACKING_METRICS"],
+  "catheter": ["catheter", "CENTRAL_CATHETER_TREATMENT", "CATHETER_INSERTION_REPLACEMENT"],
   "stoma": ["stoma", "STOMA_TREATMENT"],
   "enema": ["enema", "ENEMA_UNDER_INSTRUCTION"]
 };
